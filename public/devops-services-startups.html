@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Service Summary | Divine Emmanuel</title>
+  <meta name="theme-color" content="#0d0d0d" />
+  <link rel="manifest" href="../manifest.webmanifest" />
+  <link rel="icon" href="../assets/icons/icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="../assets/icons/icon.svg" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <style>
+    :root {
+      --gold: #d4af37;
+      --bg: #0d0d0d;
+      --panel: #151515;
+      --panel2: #181818;
+      --text: #f5f5f5;
+      --muted: #b9b9b9;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Georgia, 'Times New Roman', serif;
+      line-height: 1.6;
+      min-height: 100vh;
+      padding: 24px 16px 48px;
+    }
+
+    a { color: inherit; }
+
+    .container { max-width: 1040px; margin: 0 auto; }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .back {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(212,175,55,0.25);
+      background: rgba(255,255,255,0.03);
+    }
+
+    .back strong { color: var(--gold); letter-spacing: 0.4px; }
+
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(212,175,55,0.55);
+      background: rgba(212,175,55,0.10);
+      color: var(--gold);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    h1 {
+      margin: 10px 0 6px;
+      color: var(--gold);
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      font-size: 1.55rem;
+    }
+
+    .subtitle { margin: 0 0 18px; color: var(--muted); }
+
+    .wrap {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    @media (max-width: 900px) {
+      .wrap { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 18px;
+    }
+
+    .portrait {
+      border-radius: 12px;
+      border: 1px solid rgba(212,175,55,0.20);
+      overflow: hidden;
+      background: #0a0a0a;
+    }
+
+    .portrait img { width: 100%; height: auto; display: block; }
+
+    .tag {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(212,175,55,0.35);
+      color: var(--gold);
+      background: rgba(212,175,55,0.08);
+      font-weight: 700;
+      letter-spacing: 0.6px;
+      font-size: 0.85rem;
+      margin-bottom: 10px;
+    }
+
+    .name { font-size: 1.35rem; margin: 0 0 6px; }
+
+    .meta { color: var(--muted); margin: 0 0 14px; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 520px) { .grid { grid-template-columns: 1fr; } }
+
+    .service {
+      background: var(--panel2);
+      border: 1px solid rgba(212,175,55,0.14);
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .service strong { display: block; margin-bottom: 4px; }
+    .service small { color: var(--muted); }
+
+    .rate {
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 12px;
+      border-left: 4px solid var(--gold);
+      background: rgba(212,175,55,0.07);
+    }
+
+    .rate strong { color: var(--gold); }
+
+    .footer {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="topbar">
+      <a class="back" href="../index.html#home" aria-label="Back to home">
+        <span aria-hidden="true">←</span>
+        <strong>Home</strong>
+      </a>
+      <a class="cta" href="request-consultation.html">Request Consultation</a>
+    </div>
+
+    <h1>Service Summary</h1>
+    <p class="subtitle">A quick, scannable overview of what clients can request.</p>
+
+    <div class="wrap">
+      <div class="card portrait">
+        <img src="../assets/images/image1.jpeg" alt="Divine Emmanuel professional portrait" loading="lazy" />
+      </div>
+
+      <div class="card">
+        <div class="tag">5+ YEARS</div>
+        <h2 class="name">Divine Emmanuel</h2>
+        <p class="meta">Full-Stack • DevSecOps • Cybersecurity — based in Hamilton, Ontario, Canada.</p>
+
+        <div class="grid" aria-label="Services offered">
+          <div class="service">
+            <strong>Full-Stack Web &amp; APIs</strong>
+            <small>Secure product builds, enhancements, integrations.</small>
+          </div>
+          <div class="service">
+            <strong>Mobile Engineering</strong>
+            <small>React Native apps and API-backed experiences.</small>
+          </div>
+          <div class="service">
+            <strong>DevOps &amp; CI/CD Automation</strong>
+            <small>Build/release pipelines, environment hardening.</small>
+          </div>
+          <div class="service">
+            <strong>Cloud Delivery &amp; Observability</strong>
+            <small>Infrastructure, monitoring, reliability readiness.</small>
+          </div>
+          <div class="service">
+            <strong>Cybersecurity Hardening</strong>
+            <small>Security reviews, fixes, secure defaults.</small>
+          </div>
+          <div class="service">
+            <strong>Security &amp; Code Audits</strong>
+            <small>Quality, risk, and mitigation notes for teams.</small>
+          </div>
+        </div>
+
+        <div class="rate">
+          <strong>Consultations:</strong><br />
+          Free 15 min intro • $49.99 CAD (30 min) • $100 CAD (60 min)
+        </div>
+
+        <div class="footer">
+          Location: Hamilton, ON, Canada — serving Canadian clients.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chat Launcher: WhatsApp -->
+  <div class="chat-launcher-wrap" aria-label="WhatsApp chat">
+    <button id="chatLauncher" class="chat-launcher" aria-haspopup="dialog" aria-controls="chatOverlay" aria-label="Open WhatsApp chat">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M4 5.5C4 4.12 5.12 3 6.5 3H17.5C18.88 3 20 4.12 20 5.5V14.5C20 15.88 18.88 17 17.5 17H10.2L6 20.4V17H6.5C5.12 17 4 15.88 4 14.5V5.5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M7.5 7.8H16.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M7.5 11.2H14.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
+
+    <div id="chatOverlay" class="chat-overlay" role="dialog" aria-modal="true" aria-hidden="true">
+      <div class="chat-sheet" id="chatSheet" tabindex="-1" aria-label="WhatsApp chat">
+        <div class="chat-sheet-header">
+          <div class="chat-sheet-title">Chat</div>
+          <button type="button" class="chat-close" id="chatClose" aria-label="Close chat">&times;</button>
+        </div>
+
+        <div id="waPanel" class="wa-panel" aria-label="WhatsApp message" hidden>
+          <div class="wa-header">
+            <button type="button" class="wa-back" id="waBack" aria-label="Close chat">←</button>
+            <div class="wa-title">WhatsApp</div>
+          </div>
+
+          <div class="wa-body">
+            <div class="wa-note">Type a message here. When you press Send, WhatsApp opens in a new tab.</div>
+
+            <form class="wa-form" id="waForm" autocomplete="off">
+              <textarea id="waInput" class="wa-textarea" placeholder="Write your message…" aria-label="WhatsApp message"></textarea>
+              <button type="submit" class="wa-send" aria-label="Send on WhatsApp">Send</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .chat-launcher-wrap { position: fixed; right: 16px; bottom: 16px; z-index: 5000; }
+
+    .chat-launcher {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: 4px solid rgba(255,255,255,0.10);
+      background: rgba(212,175,55,0.16);
+      color: #d4af37;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.40);
+      transition: 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .chat-launcher::before {
+      content: '';
+      position: absolute;
+      inset: -10px;
+      border-radius: 999px;
+      border: 1px solid rgba(212,175,55,0.35);
+      opacity: 0.0;
+      transform: scale(0.92);
+      animation: chatPulse 1800ms ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes chatPulse {
+      0% { opacity: 0.0; transform: scale(0.92); }
+      35% { opacity: 0.55; transform: scale(1.02); }
+      70% { opacity: 0.10; transform: scale(1.10); }
+      100% { opacity: 0.0; transform: scale(0.92); }
+    }
+
+    .chat-launcher:hover { transform: scale(1.06) rotate(3deg); background: rgba(212,175,55,0.22); }
+
+    .chat-overlay {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: flex-end;
+      justify-content: flex-end;
+      padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+      background: rgba(0,0,0,0.55);
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+    }
+
+    body.chat-open { overflow: hidden; }
+
+    .chat-sheet [hidden] { display: none !important; }
+
+    .chat-sheet {
+      width: min(460px, 94vw);
+      height: min(720px, calc(100dvh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom)));
+      max-height: calc(100dvh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+      overflow: hidden;
+      border-radius: 14px;
+      border: 1px solid rgba(212, 175, 55, 0.20);
+      background: rgba(0,0,0,0.55);
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.55);
+      transform: translateY(14px) scale(0.985);
+      opacity: 0;
+      transition: transform 260ms ease, opacity 260ms ease;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      position: relative;
+      isolation: isolate;
+      will-change: transform, opacity;
+    }
+
+    .chat-sheet::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      border-radius: 14px;
+      background:
+        radial-gradient(700px 260px at 10% 0%, rgba(212,175,55,0.18), transparent 60%),
+        radial-gradient(420px 320px at 120% 22%, rgba(255,255,255,0.08), transparent 55%),
+        radial-gradient(520px 380px at 70% 120%, rgba(212,175,55,0.10), transparent 60%);
+      opacity: 0.85;
+      mix-blend-mode: screen;
+      animation: chatAurora 7s ease-in-out infinite;
+    }
+
+    @keyframes chatAurora {
+      0%, 100% { transform: translateY(0) scale(1); filter: hue-rotate(0deg); }
+      50% { transform: translateY(-8px) scale(1.01); filter: hue-rotate(8deg); }
+    }
+
+    .chat-overlay.is-open .chat-sheet { transform: translateY(0) scale(1); opacity: 1; }
+
+    .chat-sheet-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 14px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .chat-sheet-title {
+      color: rgba(255,255,255,0.92);
+      font-weight: 900;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+    }
+
+    .chat-close {
+      background: transparent;
+      border: 0;
+      color: rgba(255,255,255,0.92);
+      font-size: 1.6rem;
+      line-height: 1;
+      cursor: pointer;
+      padding: 0 4px;
+    }
+
+    .wa-panel {
+      height: 100%;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      padding: 0;
+      min-height: 0;
+    }
+
+    .wa-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .wa-back {
+      border: 1px solid rgba(212,175,55,0.18);
+      background: rgba(212,175,55,0.10);
+      color: #d4af37;
+      border-radius: 999px;
+      padding: 6px 10px;
+      cursor: pointer;
+      font-weight: 900;
+    }
+
+    .wa-title { color: rgba(255,255,255,0.92); font-weight: 900; }
+
+    .wa-body {
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+      min-height: 0;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+    }
+
+    .wa-note {
+      color: rgba(255,255,255,0.72);
+      font-size: 0.92rem;
+      line-height: 1.4;
+    }
+
+    .wa-form {
+      display: grid;
+      grid-template-rows: 1fr auto;
+      gap: 10px;
+      min-height: 0;
+    }
+
+    .wa-textarea {
+      width: 100%;
+      min-height: 140px;
+      max-height: 40vh;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+      color: rgba(255,255,255,0.92);
+      outline: none;
+      resize: none;
+      overflow: auto;
+      font-family: inherit;
+    }
+
+    .wa-textarea:focus {
+      border-color: rgba(212,175,55,0.55);
+      box-shadow: 0 0 0 3px rgba(212,175,55,0.10);
+    }
+
+    .wa-send {
+      border-radius: 999px;
+      padding: 12px 14px;
+      border: 1px solid rgba(212,175,55,0.55);
+      background: rgba(212,175,55,0.14);
+      color: #d4af37;
+      font-weight: 900;
+      cursor: pointer;
+      min-width: 78px;
+    }
+
+    @media (max-width: 480px) {
+      .chat-overlay { justify-content: center; }
+      .chat-sheet { width: min(520px, 96vw); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .chat-launcher, .chat-sheet { transition: none; }
+      .chat-launcher::before { animation: none; }
+      .chat-sheet::after { animation: none; }
+      .chat-overlay { -webkit-backdrop-filter: none; backdrop-filter: none; }
+    }
+  </style>
+
+  <script>
+    (function() {
+      const launcher = document.getElementById('chatLauncher');
+      const overlay = document.getElementById('chatOverlay');
+      const closeBtn = document.getElementById('chatClose');
+
+      const waPanel = document.getElementById('waPanel');
+      const waBack = document.getElementById('waBack');
+      const waForm = document.getElementById('waForm');
+      const waInput = document.getElementById('waInput');
+
+      const WA_NUMBER = '13653845983';
+
+      let lastActiveEl = null;
+
+      function openWhatsApp(prefill) {
+        const defaultMsg = "Hi Divine, I visited your website and would like to discuss software, cybersecurity, and/or DevSecOps services. Could we schedule a consultation?";
+        const msg = (prefill || '').trim() || defaultMsg;
+        const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
+        window.open(url, '_blank', 'noopener');
+      }
+
+      function showWhatsApp(prefill) {
+        if (waPanel) waPanel.hidden = false;
+        if (waInput && !String(waInput.value || '').trim()) {
+          const defaultMsg = "Hi Divine, I visited your website and would like to discuss software, cybersecurity, and/or DevSecOps services. Could we schedule a consultation?";
+          waInput.value = (prefill || '').trim() || defaultMsg;
+        }
+        setTimeout(() => {
+          try { waInput && waInput.focus({ preventScroll: true }); } catch (e) {}
+        }, 0);
+      }
+
+      function openOverlay() {
+        if (!overlay) return;
+        lastActiveEl = document.activeElement;
+        overlay.style.display = 'flex';
+        overlay.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('chat-open');
+        requestAnimationFrame(() => overlay.classList.add('is-open'));
+        showWhatsApp();
+      }
+
+      function closeOverlay() {
+        if (!overlay) return;
+        overlay.classList.remove('is-open');
+        overlay.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('chat-open');
+        setTimeout(() => {
+          overlay.style.display = 'none';
+          if (waPanel) waPanel.hidden = true;
+          try { lastActiveEl && lastActiveEl.focus && lastActiveEl.focus(); } catch (e) {}
+        }, 180);
+      }
+
+      launcher && launcher.addEventListener('click', openOverlay);
+      closeBtn && closeBtn.addEventListener('click', closeOverlay);
+      waBack && waBack.addEventListener('click', closeOverlay);
+
+      overlay && overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) closeOverlay();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (!overlay) return;
+        if (overlay.getAttribute('aria-hidden') === 'true') return;
+        if (e.key === 'Escape') closeOverlay();
+      });
+
+      waForm && waForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        openWhatsApp(waInput ? waInput.value : '');
+        closeOverlay();
+      });
+    })();
+  </script>
+</body>
+</html>

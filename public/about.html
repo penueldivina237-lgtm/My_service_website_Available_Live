@@ -1,0 +1,2797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deep Dive | Divine Emmanuel</title>
+  <meta name="theme-color" content="#0d0d0d" />
+  <link rel="manifest" href="../manifest.webmanifest" />
+  <link rel="icon" href="../assets/icons/icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="../assets/icons/icon.svg" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    html, body {
+      font-family: Georgia, 'Times New Roman', serif;
+      background: #0b0b0b;
+      color: #f5f5f5;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1180px;
+      margin: auto;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(10, 10, 10, 0.95);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      backdrop-filter: blur(10px);
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 0;
+    }
+
+    .nav.inside-nav {
+      justify-content: flex-start;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 40px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(212, 175, 55, 0.55);
+      background: rgba(212, 175, 55, 0.12);
+      color: #d4af37;
+      font-weight: 800;
+      letter-spacing: 0.2px;
+      line-height: 1;
+      transition: transform 0.14s ease, background 0.14s ease, color 0.14s ease;
+    }
+
+    .back-btn:hover {
+      background: rgba(212, 175, 55, 0.95);
+      color: #0a0a0a;
+      transform: translateY(-1px);
+    }
+
+    .back-btn:active { transform: translateY(0); }
+
+    .brand {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #d4af37;
+      letter-spacing: 1px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 22px;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      font-size: 0.95rem;
+      color: #f5f5f5;
+      transition: color 0.3s ease;
+      position: relative;
+      padding: 5px 0;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: #d4af37;
+      transition: width 0.3s ease;
+      box-shadow: 0 0 8px rgba(212, 175, 55, 0.6);
+    }
+
+    .nav-links a:hover {
+      color: #d4af37;
+      transform: translateY(-2px);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-links a {
+      display: inline-block;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .nav-links a.nav-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(212, 175, 55, 0.14);
+      border: 1px solid rgba(212, 175, 55, 0.55);
+      color: #d4af37;
+      line-height: 1;
+    }
+
+    .nav-links a.nav-cta::after { display: none; }
+
+    .nav-links a.nav-cta:hover {
+      color: #0a0a0a;
+      background: rgba(212, 175, 55, 0.95);
+      transform: translateY(-1px);
+    }
+
+    /* Professional App Flow Visualization Styles */
+    .app-flow-visualization {
+      margin-top: 60px;
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(212, 175, 55, 0.1);
+      border-radius: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    .flow-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      gap: 20px;
+      min-height: 400px;
+      flex-wrap: wrap;
+    }
+    .flow-screen {
+      flex: 1;
+      min-width: 200px;
+      max-width: 280px;
+      background: #1a1a1a;
+      border: 2px solid #333;
+      border-radius: 15px;
+      padding: 10px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      position: relative;
+      z-index: 2;
+      transition: transform 0.3s ease;
+    }
+    .flow-screen:hover {
+      transform: translateY(-10px);
+      border-color: #d4af37;
+    }
+    .screen-header {
+      height: 20px;
+      background: #222;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      padding-left: 8px;
+    }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: #444; }
+    .screen-content {
+      height: 320px;
+      background: #0d0d0d;
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      padding: 15px;
+    }
+    .skeleton-line { height: 8px; background: #222; border-radius: 4px; }
+    .skeleton-box { height: 120px; background: #1a1a1a; border-radius: 8px; border: 1px dashed #333; }
+    
+    /* Live Dashboard Styles */
+    .dashboard-split {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 30px;
+      margin-bottom: 50px;
+      align-items: stretch;
+    }
+
+    .deepdive-chat-wrap {
+      display: none;
+      margin-top: 22px;
+    }
+
+    .deepdive-chat {
+      background: #0a0a0a;
+      border: 1px solid rgba(212,175,55,0.16);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.45);
+    }
+
+    .dd-chat-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 14px;
+      background: rgba(255,255,255,0.02);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .dd-chat-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      object-fit: cover;
+      border: 2px solid rgba(212,175,55,0.6);
+      box-shadow: 0 0 18px rgba(212,175,55,0.12);
+      flex: 0 0 auto;
+      background: #101010;
+    }
+
+    .dd-chat-title {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      min-width: 0;
+    }
+
+    .dd-chat-name {
+      color: #d4af37;
+      font-weight: 900;
+      letter-spacing: 0.4px;
+      line-height: 1.1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .dd-chat-sub {
+      color: #bdbdbd;
+      font-size: 0.82rem;
+      line-height: 1.25;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .dd-chat-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      border: 1px solid rgba(212,175,55,0.28);
+      background: rgba(212,175,55,0.08);
+      color: #d4af37;
+      line-height: 1;
+    }
+
+    .dd-chat-live {
+      margin-left: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.72rem;
+      color: #9a9a9a;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .dd-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(212,175,55,0.95);
+      box-shadow: 0 0 10px rgba(212,175,55,0.35);
+    }
+
+    .dd-workflow-steps {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      padding: 10px 14px 12px;
+      background: rgba(255,255,255,0.01);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .dd-step {
+      text-align: center;
+      font-size: 0.72rem;
+      color: #7a7a7a;
+      padding: 7px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.01);
+      white-space: nowrap;
+    }
+
+    .dd-step.is-active {
+      color: #0a0a0a;
+      background: rgba(212,175,55,0.95);
+      border-color: rgba(212,175,55,0.75);
+      font-weight: 900;
+    }
+
+    .dd-chat-body {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 250px;
+      max-height: 360px;
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+      background: radial-gradient(60% 60% at 20% 0%, rgba(212,175,55,0.06), transparent 60%);
+    }
+
+    .dd-bubble {
+      max-width: 92%;
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 0.92rem;
+      line-height: 1.42;
+      color: #eee;
+      background: #171717;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .dd-bubble.system {
+      background: #111;
+      border-style: dashed;
+      color: #d4d4d4;
+      font-size: 0.88rem;
+    }
+
+    .dd-bubble.divine {
+      border-left: 3px solid rgba(212,175,55,0.85);
+    }
+
+    .dd-bubble.client {
+      margin-left: auto;
+      background: #1a1a1a;
+      border-right: 3px solid rgba(212,175,55,0.55);
+    }
+
+    .dd-chat-footer {
+      padding: 10px 14px;
+      background: rgba(255,255,255,0.02);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      color: #8b8b8b;
+      font-size: 0.78rem;
+    }
+
+    .dd-typing {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #bcbcbc;
+    }
+
+    .dd-typing-dots {
+      display: inline-flex;
+      gap: 5px;
+      align-items: center;
+    }
+
+    .dd-typing-dots span {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(212,175,55,0.75);
+      opacity: 0.35;
+      animation: ddBlink 900ms infinite;
+    }
+
+    .dd-typing-dots span:nth-child(2) { animation-delay: 150ms; }
+    .dd-typing-dots span:nth-child(3) { animation-delay: 300ms; }
+
+    @keyframes ddBlink {
+      0%, 70%, 100% { opacity: 0.25; transform: translateY(0); }
+      35% { opacity: 0.9; transform: translateY(-1px); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .dd-typing-dots span { animation: none; }
+    }
+
+    @media (max-width: 900px) {
+      #gallery .dashboard-split,
+      #gallery .ai-robot-container,
+      #gallery .app-flow-visualization {
+        display: none !important;
+      }
+      .deepdive-chat-wrap { display: block; }
+    }
+    .img-highlight {
+      border-radius: 15px;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      overflow: hidden;
+      height: 100%;
+    }
+    .img-highlight img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: 0.5s ease;
+    }
+    .img-highlight:hover img { transform: scale(1.05); }
+
+    .live-dashboard {
+      background: #111;
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 15px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+      position: relative;
+    }
+    .dash-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #222;
+    }
+    .dash-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+    .stat-card {
+      background: #1a1a1a;
+      padding: 15px;
+      border-radius: 10px;
+      border-left: 3px solid #d4af37;
+    }
+    .stat-value {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #fff;
+      display: block;
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      color: #777;
+      text-transform: uppercase;
+    }
+    .dash-chart-area {
+      flex-grow: 1;
+      background: #0d0d0d;
+      border-radius: 10px;
+      padding: 15px;
+      min-height: 200px;
+      position: relative;
+    }
+    .bar-group {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      height: 120px;
+      justify-content: space-around;
+      margin-top: 20px;
+    }
+    .animated-bar {
+      width: 25px;
+      background: linear-gradient(to top, #d4af37, #f0cb57);
+      border-radius: 4px 4px 0 0;
+      height: var(--h);
+      opacity: 0.8;
+    }
+    .status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      color: #2ecc71;
+    }
+    .pulse-ring {
+      width: 8px;
+      height: 8px;
+      background: #2ecc71;
+      border-radius: 50%;
+      position: relative;
+    }
+    .pulse-ring::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border: 2px solid #2ecc71;
+      border-radius: 50%;
+      
+    }
+    @keyframes ripple {
+      0% { transform: scale(1); opacity: 1; }
+      100% { transform: scale(3); opacity: 0; }
+    }
+
+    /* AI Robot & Echo Text Styles */
+    .ai-robot-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 0;
+      min-height: 500px;
+      position: relative;
+      background: radial-gradient(circle at center, rgba(212, 175, 55, 0.05) 0%, transparent 70%);
+    }
+    
+    /* Humanoid AI Robot Styles */
+    .humanoid-robot {
+      width: 120px;
+      height: 180px;
+      position: relative;
+      margin-bottom: 20px;
+      
+    }
+    .robot-head {
+      width: 50px;
+      height: 60px;
+      background: linear-gradient(135deg, #222, #000);
+      border: 2px solid #d4af37;
+      border-radius: 20px 20px 10px 10px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .robot-visor {
+      width: 35px;
+      height: 8px;
+      background: #d4af37;
+      margin: 15px auto 0;
+      box-shadow: 0 0 10px #d4af37;
+      border-radius: 4px;
+      position: relative;
+      overflow: hidden;
+    }
+    .robot-visor::after {
+      content: '';
+      position: absolute;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+      
+    }
+    .robot-body {
+      width: 70px;
+      height: 90px;
+      background: #111;
+      border: 2px solid rgba(212, 175, 55, 0.4);
+      margin: 5px auto 0;
+      border-radius: 10px 10px 5px 5px;
+      position: relative;
+    }
+    .robot-arm {
+      width: 15px;
+      height: 70px;
+      background: #0d0d0d;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      position: absolute;
+      top: 5px;
+      border-radius: 8px;
+    }
+    .robot-arm.left { left: -20px; transform: rotate(10deg); }
+    .robot-arm.right { right: -20px; transform: rotate(-10deg); }
+    
+    @keyframes float-bot {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+    @keyframes eye-scan {
+      to { left: 100%; }
+    }
+
+    .echo-container {
+      height: 120px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      perspective: 1000px;
+    }
+    
+    .echo-text {
+      font-family: 'Courier New', monospace;
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #d4af37;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      position: relative;
+      opacity: 0;
+      
+    }
+    
+    .echo-text::before, .echo-text::after {
+      content: attr(data-text);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      opacity: 0.3;
+    }
+    
+    .echo-text::before {
+      
+      color: #fff;
+    }
+    .echo-text::after {
+      
+      color: #d4af37;
+    }
+
+    @keyframes echo-fade {
+      0%, 100% { opacity: 0; transform: scale(0.8) translateZ(-100px); }
+      20%, 80% { opacity: 1; transform: scale(1) translateZ(0); }
+    }
+    
+    @keyframes echo-layer-1 {
+      0%, 20% { transform: scale(1); opacity: 0; }
+      50% { transform: scale(1.5) translateZ(50px); opacity: 0.2; }
+      100% { transform: scale(2) translateZ(100px); opacity: 0; }
+    }
+    
+    @keyframes echo-layer-2 {
+      0%, 30% { transform: scale(1); opacity: 0; }
+      60% { transform: scale(1.8) translateZ(80px); opacity: 0.1; }
+      100% { transform: scale(2.5) translateZ(150px); opacity: 0; }
+    }
+
+    /* Internal Feature Badges */
+    .feature-tag {
+      font-size: 0.6rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(212, 175, 55, 0.1);
+      color: #d4af37;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      display: inline-block;
+      margin-bottom: 5px;
+    }
+    .pulse-dot {
+      width: 4px;
+      height: 4px;
+      background: #d4af37;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 5px;
+      box-shadow: 0 0 5px #d4af37;
+      
+    }
+    @keyframes point-pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.5); opacity: 0.5; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* Flow Lines SVG */
+    .flow-lines-svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .connector-line {
+      fill: none;
+      stroke: rgba(212, 175, 55, 0.2);
+      stroke-width: 2;
+      stroke-dasharray: 5, 5;
+      
+    }
+    @keyframes dash {
+      to { stroke-dashoffset: -1000; }
+    }
+
+    .hero {
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(rgba(0,0,0,0.72), rgba(0,0,0,0.80)),
+        url('../assets/images/image2.jpeg') center/cover no-repeat;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      backdrop-filter: blur(7px);
+      z-index: 0;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 40px;
+      align-items: center;
+      width: 100%;
+      padding: 70px 0;
+    }
+
+    .hero-text .sub {
+      color: #d4af37;
+      font-size: 0.95rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    .hero-text h1 {
+      font-size: 3.2rem;
+      line-height: 1.1;
+      margin-bottom: 18px;
+      color: #fff;
+    }
+
+    .hero-text p {
+      max-width: 620px;
+      color: #e6e6e6;
+      font-size: 1.05rem;
+      margin-bottom: 26px;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 14px 26px;
+      border-radius: 999px;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: 0.3s;
+      font-size: 0.95rem;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 44px;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #d4af37, #f0cb57);
+      color: #111;
+      border-color: rgba(255, 255, 255, 0.10);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #f0cb57, #d4af37);
+    }
+
+    .btn-outline {
+      color: #d4af37;
+      border: 1px solid transparent;
+      background:
+        linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0)) padding-box,
+        linear-gradient(135deg, rgba(212, 175, 55, 0.90), rgba(212, 175, 55, 0.25)) border-box;
+    }
+
+    .btn-outline:hover {
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.95), rgba(240, 203, 87, 0.95));
+      color: #111;
+    }
+
+    .hero-card {
+      position: relative;
+      z-index: 2;
+      background: rgba(17,17,17,0.85);
+      border: 1px solid rgba(212,175,55,0.3);
+      padding: 18px;
+      border-radius: 14px;
+      box-shadow: 0 20px 45px rgba(0,0,0,0.34);
+    }
+
+    .hero-card img {
+      width: 100%;
+      border-radius: 10px;
+      max-height: 650px;
+      object-fit: cover;
+    }
+
+    section {
+      padding: 85px 0;
+    }
+
+    .section-dark {
+      background: #121212;
+    }
+
+    .section-title {
+      text-align: center;
+      color: #d4af37;
+      font-size: 2.2rem;
+      margin-bottom: 14px;
+    }
+
+    .section-subtitle {
+      text-align: center;
+      max-width: 760px;
+      margin: 0 auto 48px;
+      color: #d8d8d8;
+    }
+
+    .story-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .story-box {
+      background: #181818;
+      border-left: 4px solid #d4af37;
+      padding: 30px;
+      border-radius: 10px;
+    }
+
+    .story-box p {
+      color: #e4e4e4;
+      margin-bottom: 16px;
+    }
+
+    .story-image img {
+      width: 100%;
+      height: 500px;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-top: 32px;
+    }
+
+    .stat-card {
+      background: #191919;
+      text-align: center;
+      padding: 24px 18px;
+      border-radius: 10px;
+      border-top: 3px solid #d4af37;
+    }
+
+    .stat-card h3 {
+      font-size: 1.9rem;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .stat-card p {
+      color: #d7d7d7;
+      font-size: 0.95rem;
+    }
+
+    .social-icons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+
+    .social-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(212, 175, 55, 0.28);
+      background: rgba(255, 255, 255, 0.03);
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+      text-decoration: none;
+    }
+
+    .social-icon svg { width: 20px; height: 20px; display:block; }
+
+    .social-icon:hover {
+      transform: translateY(-2px);
+      background: rgba(212, 175, 55, 0.08);
+      border-color: rgba(212, 175, 55, 0.55);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .social-icon { transition: none; }
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+
+    .expertise-accordion {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-top: 12px;
+    }
+
+    .acc-item {
+      background: #191919;
+      border-radius: 12px;
+      border-top: 3px solid #d4af37;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+      overflow: hidden;
+    }
+
+    .acc-trigger {
+      width: 100%;
+      background: transparent;
+      border: 0;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 18px 18px;
+      cursor: pointer;
+      text-align: left;
+      font: inherit;
+    }
+
+    .acc-title {
+      font-weight: 800;
+      letter-spacing: 0.2px;
+    }
+
+    .acc-icon {
+      width: 34px;
+      height: 34px;
+      flex: 0 0 auto;
+      border-radius: 999px;
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      background: rgba(212, 175, 55, 0.08);
+      position: relative;
+      transition: transform 220ms ease, background 220ms ease, border-color 220ms ease;
+    }
+
+    .acc-icon::before,
+    .acc-icon::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 14px;
+      height: 2px;
+      background: rgba(212, 175, 55, 0.95);
+      transform: translate(-50%, -50%);
+      border-radius: 2px;
+    }
+
+    .acc-icon::after {
+      transform: translate(-50%, -50%) rotate(90deg);
+    }
+
+    .acc-item.is-open .acc-icon {
+      transform: rotate(180deg);
+      background: rgba(212, 175, 55, 0.14);
+      border-color: rgba(212, 175, 55, 0.55);
+    }
+
+    .acc-item.is-open .acc-icon::after {
+      transform: translate(-50%, -50%) rotate(0deg);
+      opacity: 0;
+    }
+
+    .acc-panel {
+      height: 0;
+      overflow: hidden;
+      padding: 0 18px;
+      transition: height 320ms cubic-bezier(0.2, 0.9, 0.2, 1);
+    }
+
+    .acc-panel p {
+      color: #d8d8d8;
+      font-size: 0.97rem;
+      margin-bottom: 18px;
+    }
+
+    .acc-item.is-open .acc-panel {
+      padding-top: 2px;
+    }
+
+    .feature-card {
+      background: #191919;
+      padding: 28px 22px;
+      border-radius: 10px;
+      border-top: 3px solid #d4af37;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+    }
+
+    .feature-card h3 {
+      margin-bottom: 10px;
+      color: #fff;
+    }
+
+    .feature-card p {
+      color: #d8d8d8;
+      font-size: 0.97rem;
+    }
+
+    @media (max-width: 900px) {
+      .expertise-accordion { grid-template-columns: 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .acc-panel, .acc-icon { transition: none; }
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .gallery-grid img {
+      width: 100%;
+      height: 420px;
+      object-fit: cover;
+      border-radius: 12px;
+      transition: transform 0.35s ease, opacity 0.35s ease;
+    }
+
+    .gallery-grid img:hover {
+      transform: scale(1.02);
+      opacity: 0.9;
+    }
+
+    .booking-layout {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    .booking-box,
+    .side-box {
+      background: #181818;
+      padding: 32px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .booking-form {
+      display: grid;
+      gap: 16px;
+    }
+
+    .booking-form input,
+    .booking-form select,
+    .booking-form textarea {
+      width: 100%;
+      padding: 14px;
+      background: #101010;
+      border: 1px solid #2d2d2d;
+      color: #fff;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+
+    .booking-form textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .estimate-box {
+      padding: 14px;
+      background: #0f0f0f;
+      border-left: 4px solid #d4af37;
+      color: #fff;
+      font-weight: bold;
+    }
+
+    .rate-highlight {
+      margin-top: 22px;
+      padding: 20px;
+      border-radius: 10px;
+      background: rgba(212,175,55,0.08);
+      border: 1px solid rgba(212,175,55,0.25);
+    }
+
+    .rate-highlight h3 {
+      color: #d4af37;
+      margin-bottom: 10px;
+    }
+
+    .rate-highlight p {
+      color: #ececec;
+      margin-bottom: 8px;
+    }
+
+    .side-box h3 {
+      color: #d4af37;
+      margin-bottom: 14px;
+    }
+
+    .side-box p {
+      color: #e2e2e2;
+      margin-bottom: 10px;
+    }
+
+    .side-box img {
+      margin-top: 18px;
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+
+    .contact-profile {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 10px;
+    }
+
+    .side-box img.contact-avatar {
+      margin-top: 0;
+      width: 92px;
+      height: 92px;
+      border-radius: 999px;
+      object-fit: cover;
+      border: 1px solid rgba(212, 175, 55, 0.22);
+      background: #101010;
+      flex: 0 0 auto;
+    }
+
+    .contact-person {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    .contact-name {
+      font-weight: 900;
+      letter-spacing: 0.4px;
+      color: #fff;
+      line-height: 1.2;
+    }
+
+    .contact-role {
+      color: #d8d8d8;
+      font-size: 0.92rem;
+      line-height: 1.35;
+    }
+
+    .side-box .social-icons {
+      justify-content: flex-start;
+      margin-top: 10px;
+      margin-bottom: 14px;
+    }
+
+    .contact-meta {
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding-top: 14px;
+      margin-top: 8px;
+    }
+
+    .contact-note {
+      color: #dcdcdc;
+      margin-bottom: 0;
+    }
+
+    @media (max-width: 520px) {
+      .side-box img.contact-avatar { width: 84px; height: 84px; }
+      .contact-role { font-size: 0.9rem; }
+    }
+
+    .quote-box {
+      max-width: 900px;
+      margin: auto;
+      text-align: center;
+      background: linear-gradient(135deg, #151515, #0d0d0d);
+      border: 1px solid rgba(212,175,55,0.22);
+      border-radius: 14px;
+      padding: 34px;
+    }
+
+    .quote-box p {
+      font-size: 1.2rem;
+      color: #f3f3f3;
+      margin-bottom: 12px;
+    }
+
+    .quote-box span {
+      color: #d4af37;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    footer {
+      background: #080808;
+      padding: 24px 0;
+      text-align: center;
+      color: #aaa;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 980px) {
+      .hero-content,
+      .story-grid,
+      .feature-grid,
+      .gallery-grid,
+      .booking-layout,
+      .stats-grid {
+        grid-template-columns: 1fr;
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+
+      .hero-text {
+        text-align: center;
+        order: 2;
+      }
+
+      .hero-card {
+        order: 1;
+        margin-bottom: 25px;
+      }
+
+      .hero-card img {
+        max-width: 280px;
+        margin: 0 auto;
+        border-radius: 15px;
+      }
+
+      .nav {
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 15px 15px;
+      }
+
+      .nav-links {
+        justify-content: flex-end;
+        gap: 15px;
+      }
+
+      .hero-text h1 {
+        font-size: 2.1rem;
+      }
+
+      .story-image img,
+      .gallery-grid img {
+        height: auto;
+        max-height: 350px;
+        margin: 0 auto;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .hero-text h1 {
+        font-size: 1.8rem;
+      }
+
+      .section-title {
+        font-size: 1.6rem;
+      }
+
+      .btn-group {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+      }
+
+      .btn {
+        width: 100%;
+        max-width: 280px;
+        text-align: center;
+      }
+      
+      .hero-text .hero-full { display: none; }
+      .hero-text .hero-brief { display: block; font-size: 0.95rem; color: #e6e6e6; margin-bottom: 18px; }
+    }
+
+    /* Additional responsive tweaks for tablet and small phones */
+    @media (max-width: 900px) {
+      .hero-content,
+      .story-grid,
+      .feature-grid,
+      .gallery-grid,
+      .booking-layout,
+      .stats-grid,
+      .about-grid,
+      .flyer-wrap {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        min-height: auto;
+        padding: 40px 0;
+      }
+
+      .hero-card img,
+      .story-image img,
+      .gallery-grid img,
+      .flyer-image img {
+        max-height: 420px;
+        height: auto;
+        object-fit: cover;
+      }
+
+      .booking-box,
+      .side-box,
+      .card,
+      .flyer-text {
+        padding: 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-text h1 { font-size: 1.6rem; }
+      .hero-text p, .section-subtitle, .about-box p { font-size: 0.95rem; }
+      .btn { width: 100%; }
+      .booking-box { padding: 16px; }
+      .gallery-grid img { height: auto; }
+      .booking-form input, .booking-form textarea, .booking-form select { padding: 12px; font-size: 0.95rem; }
+      .rate-price { font-size: 1.8rem; }
+    }
+
+    /* Animation helpers */
+    .fade-img {
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      opacity: 1;
+      will-change: opacity, transform;
+    }
+
+    .fade-img.hidden {
+      opacity: 0;
+      transform: scale(0.98);
+    }
+
+    .gallery-grid img {
+      opacity: 0.92;
+      transition: opacity 0.45s ease, transform 0.45s ease;
+      transform: translateY(6px);
+    }
+
+    .gallery-grid img.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .btn {
+      transition: transform 0.14s ease, box-shadow 0.14s ease;
+    }
+
+    .btn:active { transform: translateY(1px) scale(0.995); }
+      header { animation: slideDown 0.8s ease forwards; } @keyframes slideDown { from { transform: translateY(-100%); } to { transform: translateY(0); } } .hero-text { animation: fadeInRight 1s ease 0.2s both; } .hero-card { animation: fadeInLeft 1s ease 0.4s both; } @keyframes fadeInRight { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } } @keyframes fadeInLeft { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }</style>
+
+  <!-- Cookie consent + analytics loader -->
+  <div id="cookieConsent" class="cookie-consent" aria-live="polite" style="display:none;">
+    <div class="cookie-text">We use analytics to improve the site. Accept tracking?</div>
+    <div class="cookie-actions">
+      <button id="acceptAnalytics" class="btn btn-primary">Accept</button>
+      <button id="declineAnalytics" class="btn btn-outline">Decline</button>
+    </div>
+  </div>
+  <style>
+    .cookie-consent { position:fixed; right:12px; bottom:12px; background:#111; color:#fff; padding:12px 14px; border-radius:8px; box-shadow:0 8px 24px rgba(0,0,0,0.4); z-index:3000; display:flex; gap:10px; align-items:center; }
+    .cookie-text { margin-right:8px; }
+    .skip-link{position:absolute;left:8px;top:8px;background:#111;color:#fff;padding:8px 12px;border-radius:6px;z-index:1500;transform:translateY(-120%);transition:transform .18s}
+    .skip-link:focus{transform:translateY(0);}
+      header { animation: slideDown 0.8s ease forwards; } @keyframes slideDown { from { transform: translateY(-100%); } to { transform: translateY(0); } } .hero-text { animation: fadeInRight 1s ease 0.2s both; } .hero-card { animation: fadeInLeft 1s ease 0.4s both; } @keyframes fadeInRight { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } } @keyframes fadeInLeft { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }</style>
+  <script>
+    (function(){
+      function loadAnalytics() {
+        if (window._analyticsLoaded) return;
+        window._analyticsLoaded = true;
+        const id = 'G-XXXXXXXXXX';
+        const s = document.createElement('script');
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=' + id;
+        s.async = true; document.head.appendChild(s);
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);} window.gtag = gtag;
+        gtag('js', new Date());
+        gtag('config', id, { anonymize_ip: true });
+      }
+
+      const consent = localStorage.getItem('analyticsConsent');
+      const banner = document.getElementById('cookieConsent');
+      if (consent === 'granted') { loadAnalytics(); }
+      else if (consent === 'declined') { /* do nothing */ }
+      else { banner.style.display = 'flex'; }
+
+      document.getElementById('acceptAnalytics')?.addEventListener('click', function(){
+        localStorage.setItem('analyticsConsent','granted'); loadAnalytics(); banner.style.display = 'none';
+      });
+
+      document.getElementById('declineAnalytics')?.addEventListener('click', function(){
+        localStorage.setItem('analyticsConsent','declined'); banner.style.display = 'none';
+      });
+    })();
+  </script>
+  <!-- AOS (Animate On Scroll) -->
+  
+  <!-- SEO & Social -->
+  <meta name="description" content="Inside — Divine Emmanuel. A deeper look at AI-enabled full-stack DevSecOps delivery: process, security-by-design, and reliable execution.">
+  
+  <meta property="og:title" content="Inside | Divine Emmanuel">
+  <meta property="og:description" content="A deeper look at how I deliver secure, scalable software: full-stack engineering, DevSecOps automation, and practical AI-enabled workflows.">
+  <meta property="og:image" content="image1.jpeg">
+  <meta name="twitter:card" content="summary_large_image">
+</head>
+<body>
+  <a class="skip-link" href="#story">Skip to main content</a>
+
+  <header>
+    <div class="container nav inside-nav">
+      <a class="back-btn" href="../index.html" aria-label="Back to home">
+        <span aria-hidden="true">←</span>
+        <span>Back</span>
+      </a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container hero-content">
+      <div class="hero-text">
+        <div class="sub">Engineering Excellence</div>
+        <h1>A deeper look into my software development philosophy and process.</h1>
+        <p class="hero-full">
+          Welcome to the deep dive — a technical overview of my approach to building modern software.
+          From mobile architecture in React Native to scalable web systems with Next.js,
+          explore the craftsmanship behind the code — with security and reliable delivery built in.
+        </p>
+        <p class="hero-brief" style="display:none;">A technical look at my engineering journey and expertise.</p>
+        <div class="btn-group">
+          <a href="request-consultation.html" class="btn btn-primary">Start a Project</a>
+          <a href="#gallery" class="btn btn-outline">View Projects</a>
+        </div>
+      </div>
+
+      <div class="hero-card">
+        <img src="../assets/images/image1.jpeg" alt="Divine Emmanuel portrait" />
+      </div>
+    </div>
+  </section>
+
+  <section id="story" class="section-dark">
+    <div class="container">
+      <h2 class="section-title">Professional Journey</h2>
+      <p class="section-subtitle">
+        Delivery-focused engineering: clean architecture, security-by-design, and reliable operations.
+      </p>
+
+      <div class="story-grid">
+        <div class="story-box">
+          <p>
+            I’m Divine Emmanuel, a Hamilton, Ontario–based engineer focused on full-stack delivery, DevSecOps automation, and cybersecurity.
+            I help teams design, build, and operate secure systems — improving delivery speed, reliability, and security posture.
+          </p>
+          <p>
+            My process is structured and transparent: discovery and scoping, architecture, implementation, testing, CI/CD, observability,
+            and documentation for maintainable handoff.
+          </p>
+          <p>
+            I use AI responsibly to accelerate delivery (documentation, code review support, test scaffolding, and operational runbooks)
+            while keeping quality, privacy, and maintainability first.
+          </p>
+        </div>
+
+        <div class="story-image">
+          <img src="../assets/images/image_04.png" alt="Divine Emmanuel - Software Engineer" />
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3>5+ YEARS</h3>
+          <p>Experience</p>
+        </div>
+        <div class="stat-card">
+          <h3>$100 CAD</h3>
+          <p>Deep Dive (60m)</p>
+        </div>
+        <div class="stat-card">
+          <h3>48h</h3>
+          <p>Response Time</p>
+        </div>
+        <div class="stat-card">
+          <h3>ON</h3>
+          <p>Hamilton, Canada</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="container">
+      <h2 class="section-title">Technical Expertise</h2>
+      <p class="section-subtitle">
+        Full-stack delivery, DevSecOps automation, and cybersecurity hardening — built for production.
+      </p>
+
+      <div class="expertise-accordion" id="expertiseAccordion">
+        <div class="acc-item">
+          <button type="button" class="acc-trigger" aria-expanded="false">
+            <span class="acc-title">Full-Stack Engineering</span>
+            <span class="acc-icon" aria-hidden="true"></span>
+          </button>
+          <div class="acc-panel" hidden>
+            <p>Product-grade web apps and APIs: architecture, implementation, and maintainable handoff.</p>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button type="button" class="acc-trigger" aria-expanded="false">
+            <span class="acc-title">DevSecOps &amp; CI/CD</span>
+            <span class="acc-icon" aria-hidden="true"></span>
+          </button>
+          <div class="acc-panel" hidden>
+            <p>Build pipelines, release automation, environment promotion, and security checks baked into delivery.</p>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button type="button" class="acc-trigger" aria-expanded="false">
+            <span class="acc-title">Cybersecurity (AppSec)</span>
+            <span class="acc-icon" aria-hidden="true"></span>
+          </button>
+          <div class="acc-panel" hidden>
+            <p>Threat modeling, secure architecture reviews, and practical hardening for web/app/API systems.</p>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button type="button" class="acc-trigger" aria-expanded="false">
+            <span class="acc-title">Cloud &amp; IaC</span>
+            <span class="acc-icon" aria-hidden="true"></span>
+          </button>
+          <div class="acc-panel" hidden>
+            <p>Infrastructure-as-Code, secure cloud foundations, and repeatable environments for reliable deployments.</p>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button type="button" class="acc-trigger" aria-expanded="false">
+            <span class="acc-title">Observability &amp; Reliability</span>
+            <span class="acc-icon" aria-hidden="true"></span>
+          </button>
+          <div class="acc-panel" hidden>
+            <p>Monitoring, logging, alerting, and incident readiness so production stays stable and measurable.</p>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button type="button" class="acc-trigger" aria-expanded="false">
+            <span class="acc-title">Architecture &amp; Delivery</span>
+            <span class="acc-icon" aria-hidden="true"></span>
+          </button>
+          <div class="acc-panel" hidden>
+            <p>Scoping, tradeoffs, documentation, and clean interfaces to keep systems scalable and teams unblocked.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="gallery" class="section-dark">
+    <div class="container">
+      <h2 class="section-title">Project Deep Dives</h2>
+      <p class="section-subtitle">
+        Visual case studies of technical architecture and UI design.
+      </p>
+
+      <div class="dashboard-split">
+        <!-- One specific image highlight -->
+        <div class="img-highlight">
+           <img src="../assets/images/image2.jpeg" alt="Technical Architecture Highlight" />
+        </div>
+
+        <!-- Live Adaptive Dashboard Logic (CSS-based animation) -->
+        <div class="live-dashboard">
+          <div class="dash-header">
+             <div style="font-size: 1.1rem; font-weight: bold; color: #d4af37;">SaaS Cloud Analytics <span style="font-size: 0.7rem; color: #555;">(Live Demo)</span></div>
+             <div class="status-indicator">
+                <div class="pulse-ring"></div>
+                 Real-time Sync
+             </div>
+          </div>
+          
+          <div class="dash-stats">
+            <div class="stat-card">
+              <span class="stat-value">$142.4k</span>
+              <span class="stat-label">Total Volume</span>
+            </div>
+            <div class="stat-card" style="border-left-color: #2ecc71;">
+              <span class="stat-value">98.2%</span>
+              <span class="stat-label">Cache Hit</span>
+            </div>
+            <div class="stat-card" style="border-left-color: #3498db;">
+              <span class="stat-value">12ms</span>
+              <span class="stat-label">Latency</span>
+            </div>
+          </div>
+
+          <div class="dash-chart-area">
+             <div style="font-size: 0.75rem; color: #666; margin-bottom: 10px;">Load Distribution (%)</div>
+             <div class="bar-group">
+                <div class="animated-bar" style="--h: 60%;"></div>
+                <div class="animated-bar" style="--h: 85%; transition-delay: 0.2s;"></div>
+                <div class="animated-bar" style="--h: 45%; transition-delay: 0.4s;"></div>
+                <div class="animated-bar" style="--h: 70%; transition-delay: 0.6s;"></div>
+                <div class="animated-bar" style="--h: 92%; transition-delay: 0.8s;"></div>
+                <div class="animated-bar" style="--h: 30%; transition-delay: 1s;"></div>
+             </div>
+             <div style="display:flex; justify-content:space-between; margin-top:20px;">
+                <div class="skeleton-line" style="width: 25%; height:4px; background:#222;"></div>
+                <div class="skeleton-line" style="width: 25%; height:4px; background:#d4af3733;"></div>
+                <div class="skeleton-line" style="width: 25%; height:4px; background:#222;"></div>
+             </div>
+          </div>
+
+          <div style="background: rgba(255,255,255,0.03); border-radius: 8px; padding: 12px; font-size: 0.7rem; color: #888; border: 1px dashed #333;">
+             <span style="color:#d4af37;">System Event:</span> POST /api/v1/inventory_sync — Status 200 OK
+          </div>
+        </div>
+      </div>
+
+      <!-- AI Technical Oracle (Humanoid Format) -->
+      <div class="ai-robot-container" style="margin-top:20px;">
+        <div class="humanoid-robot">
+           <div class="robot-head">
+              <div class="robot-visor"></div>
+           </div>
+           <div class="robot-body">
+              <div class="robot-arm left"></div>
+              <div class="robot-arm right"></div>
+              <div style="position:absolute; bottom:10px; left:15px; right:15px; height:2px; background:#d4af37; opacity:0.3;"></div>
+           </div>
+           <div style="width:100%; height:10px; background:radial-gradient(rgba(212,175,55,0.2), transparent); border-radius:50%; margin-top:10px;"></div>
+        </div>
+        
+        <div class="echo-container">
+           <div id="echoText" class="echo-text" data-text="INITIALIZING SYSTEM">INITIALIZING SYSTEM</div>
+        </div>
+        
+        <p style="color: #444; font-size: 0.75rem; letter-spacing: 2px; margin-top: 20px; text-transform:uppercase;">Technical Intelligence Nexus</p>
+      </div>
+
+      <script>
+        (function(){
+          const phrases = [
+            "OPTIMIZING CLOUD NODES",
+            "REFACTORING CORE API",
+            "SYNCING REAL-TIME DATA",
+            "DEPLOYING SAAS ENGINE",
+            "EXECUTING SECURE AUTH",
+            "LATENCY OPTIMIZATION"
+          ];
+          let index = 0;
+          const el = document.getElementById('echoText');
+          if(el) {
+            setInterval(() => {
+              index = (index + 1) % phrases.length;
+              el.setAttribute('data-text', phrases[index]);
+              el.innerHTML = phrases[index];
+            }, 4000);
+          }
+        })();
+      </script>
+
+      <!-- Professional App Flow Visualizer -->
+      <div class="app-flow-visualization">
+        <h3 style="color:#d4af37; text-align:center; margin-bottom: 2rem; text-transform:uppercase; letter-spacing:2px; font-size:1rem;">Multi-Screen Architecture Mapping</h3>
+        <div class="flow-container">
+          <!-- SVG for animating connector lines -->
+          <svg class="flow-lines-svg">
+            <path class="connector-line" d="M100 150 Q 250 50, 450 150 T 850 150" />
+            <path class="connector-line" d="M100 250 Q 250 350, 450 250 T 850 250" />
+          </svg>
+
+          <!-- Screen 1: Inventory Management -->
+          <div class="flow-screen">
+            <div class="screen-header">
+              <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+            </div>
+            <div class="screen-content">
+              <div class="feature-tag"><span class="pulse-dot"></span>Cloud Sync 1.0</div>
+              <div class="skeleton-line" style="width: 80%; background:#d4af37; opacity:0.3;"></div>
+              <div class="skeleton-box" style="display:flex; flex-direction:column; gap:5px; padding:10px;">
+                <div style="height:4px; width:40%; background:#333;"></div>
+                <div style="height:4px; width:90%; background:#222;"></div>
+                <div style="height:40px; background:#111; border-radius:4px; margin-top:5px; border:1px solid #333;"></div>
+              </div>
+              <div style="display:grid; grid-template-columns: 1fr 1fr; gap:5px;">
+                 <div style="height:15px; background:#111; border-radius:3px;"></div>
+                 <div style="height:15px; background:#111; border-radius:3px;"></div>
+              </div>
+              <div class="skeleton-line" style="width: 60%;"></div>
+              <div style="font-size: 0.7rem; color: #555; text-align: center; margin-top: 10px;">Inventory Module</div>
+            </div>
+          </div>
+
+          <!-- Screen 2: Real-time Filtering Engine -->
+          <div class="flow-screen" style="transform: scale(1.1); border-color: rgba(212, 175, 55, 0.4);">
+            <div class="screen-header">
+              <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+            </div>
+            <div class="screen-content">
+              <div class="feature-tag" style="background:rgba(0,255,100,0.05); color:#2ecc71; border-color:#2ecc7133;"><span class="pulse-dot" style="background:#2ecc71; box-shadow:0 0 5px #2ecc71;"></span>Live Websockets</div>
+              <div class="skeleton-line" style="width: 90%; background:#d4af37;"></div>
+              <div style="display:flex; gap:10px;">
+                <div class="skeleton-box" style="flex:1; height:60px; border-color:#d4af3733;">
+                  <div style="height:100%; border-right:1px solid #222; width:20%;"></div>
+                </div>
+                <div class="skeleton-box" style="flex:1; height:60px; background:rgba(212,175,55,0.05);"></div>
+              </div>
+              <div class="skeleton-box" style="height:80px; position:relative; overflow:hidden;">
+                <div style="position:absolute; bottom:0; left:0; right:0; height:30%; background:linear-gradient(transparent, #d4af3711);"></div>
+                <div style="height:10px; width:10px; background:#d4af37; border-radius:50%; position:absolute; top:20%; left:30%; opacity:0.3;"></div>
+              </div>
+              <div class="skeleton-line" style="width: 40%;"></div>
+              <div style="font-size: 0.7rem; color: #d4af37; text-align: center; margin-top: 10px;">Filtering Engine (Live)</div>
+            </div>
+          </div>
+
+          <!-- Screen 3: Transactional Gateway -->
+          <div class="flow-screen">
+            <div class="screen-header">
+              <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+            </div>
+            <div class="screen-content">
+              <div class="feature-tag"><span class="pulse-dot"></span>Stripe v3 API</div>
+              <div class="skeleton-line" style="width: 70%; background:#d4af37; opacity:0.3;"></div>
+              <div class="skeleton-box" style="height:100px; border-style:solid; display:flex; align-items:center; justify-content:center;">
+                <div style="width:40px; height:40px; border:2px solid #333; border-radius:50%; border-top-color:#d4af37;"></div>
+              </div>
+              <div class="skeleton-line" style="width: 100%; height:20px; background:#111; border:1px solid #222;"></div>
+              <div class="skeleton-line" style="width: 100%;"></div>
+              <div style="font-size: 0.7rem; color: #555; text-align: center; margin-top: 20px;">Secure Checkout</div>
+            </div>
+          </div>
+        </div>
+        <p style="text-align:center; color:#777; font-size: 0.85rem; margin-top:20px; font-style:italic;">
+          *Interactive architectural mapping of the SaaS ecosystem, demonstrating cross-module data flow and UI state synchronization.
+        </p>
+      </div>
+
+      <!-- Mobile-only: Live workflow chat (replaces visuals on small screens) -->
+      <div class="deepdive-chat-wrap" aria-label="Live workflow chat demo">
+        <div class="deepdive-chat">
+          <div class="dd-chat-header">
+            <img class="dd-chat-avatar" src="../assets/images/Image_06.png" alt="Divine Emmanuel" loading="lazy" decoding="async" />
+            <div class="dd-chat-title">
+              <div class="dd-chat-name">Divine Emmanuel</div>
+              <div class="dd-chat-sub">
+                Workflow executing
+                <span class="dd-chat-pill" id="ddChatStep">Planning</span>
+              </div>
+            </div>
+            <div class="dd-chat-live"><span class="dd-dot" aria-hidden="true"></span>Live</div>
+          </div>
+
+          <div class="dd-workflow-steps" aria-label="Workflow steps">
+            <div class="dd-step is-active" data-step="Planning">Plan</div>
+            <div class="dd-step" data-step="Build">Build</div>
+            <div class="dd-step" data-step="Test">Test</div>
+            <div class="dd-step" data-step="Secure">Secure</div>
+            <div class="dd-step" data-step="Deploy">Deploy</div>
+          </div>
+
+          <div class="dd-chat-body" id="ddChatBody" aria-live="polite" aria-relevant="additions">
+            <div class="dd-bubble system">Opening project context…</div>
+            <div class="dd-bubble divine">I’m mapping architecture + key risks. Updates will appear here.</div>
+            <div class="dd-bubble client">Sounds good — show me what’s happening step-by-step.</div>
+          </div>
+
+          <div class="dd-chat-footer">
+            <div class="dd-typing" id="ddTyping" hidden>
+              <span>Typing</span>
+              <span class="dd-typing-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+            </div>
+            <div>Live updates</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="booking">
+    <div class="container">
+      <h2 class="section-title">Request a Consultation</h2>
+      <p class="section-subtitle">
+        This opens your email app with a prefilled message to Emmanuel. Please hit <strong>Send</strong> to complete your request.
+      </p>
+
+      <div class="booking-layout">
+        <div class="booking-box">
+          <form class="booking-form" id="bookingForm">
+              <label class="sr-only" for="name">Full name</label>
+              <input type="text" id="name" placeholder="Full Name" aria-label="Full name" required />
+              <label class="sr-only" for="email">Email address</label>
+              <input type="email" id="email" placeholder="Email Address" aria-label="Email address" required />
+              <label class="sr-only" for="organization">Company or project name</label>
+              <input type="text" id="organization" placeholder="Company / Project / Startup Name" aria-label="Organization or event name" />
+              <label class="sr-only" for="date">Preferred consultation date</label>
+              <input type="date" id="date" aria-label="Preferred consultation date" required />
+
+            <label class="sr-only" for="serviceType">Service type</label>
+            <select id="serviceType" aria-label="Service type">
+              <option value="Not sure (help me choose)" selected>Not sure (help me choose)</option>
+              <option value="Full-Stack Web App (Build/Enhancement)">Full-Stack Web App (Build/Enhancement)</option>
+              <option value="Backend / API Engineering">Backend / API Engineering</option>
+              <option value="Mobile App Engineering (React Native)">Mobile App Engineering (React Native)</option>
+              <option value="DevSecOps: CI/CD & Release Automation">DevSecOps: CI/CD & Release Automation</option>
+              <option value="Cloud Infrastructure & IaC (AWS/Azure/GCP)">Cloud Infrastructure & IaC (AWS/Azure/GCP)</option>
+              <option value="Observability & Reliability (Monitoring/On-call readiness)">Observability & Reliability (Monitoring/On-call readiness)</option>
+              <option value="Security Assessment (Web/App/API)">Security Assessment (Web/App/API)</option>
+              <option value="Secure Architecture Review">Secure Architecture Review</option>
+              <option value="Security & Code Audit (Quality + Risk)">Security & Code Audit (Quality + Risk)</option>
+              <option value="Threat Modeling & Risk Review">Threat Modeling & Risk Review</option>
+              <option value="Advisory / Training">Advisory / Training</option>
+            </select>
+
+            <label class="sr-only" for="projectSize">Project size</label>
+            <select id="projectSize" aria-label="Project size">
+              <option value="Small / Quick Fix" selected>Small / Quick Fix</option>
+              <option value="Medium / Standard">Medium / Standard</option>
+              <option value="Large / Complex">Large / Complex</option>
+              <option value="Ongoing / Retainer">Ongoing / Retainer</option>
+            </select>
+
+            <label class="sr-only" for="sessionType">Session type</label>
+            <select id="sessionType" aria-label="Session type">
+              <option value="intro15">15-Minute Intro Call — $0</option>
+              <option value="strategy30" selected>30-Minute Technical Strategy Session — $49.99 CAD</option>
+              <option value="deep60">1-Hour Deep Technical Consultation — $100 CAD</option>
+            </select>
+
+            <label class="sr-only" for="message">Project details</label>
+            <textarea id="message" placeholder="Tell me about your technical requirements, goals, or current stack..." aria-label="Booking message"></textarea>
+
+            <div class="estimate-box" id="totalCost">Session Price: $49.99 CAD</div>
+
+            <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:6px;">
+              <button type="button" class="btn btn-outline" id="instantBookingBtn">Book Instantly (Pick a Time)</button>
+              <button type="submit" class="btn btn-primary">Request Consultation via Email</button>
+            </div>
+          </form>
+
+          <div class="rate-highlight">
+            <h3>Investment Information</h3>
+            <p><strong>Consultations:</strong> $0 (15 min intro), $49.99 CAD (30 min strategy), $100 CAD (60 min deep dive)</p>
+            <p><strong>Focus:</strong> DevOps, Full‑Stack, or Cybersecurity guidance with clear next steps.</p>
+            <p>Scope and any applicable fees are confirmed by email before any paid work begins.</p>
+          </div>
+        </div>
+
+        <div class="side-box" id="contact">
+          <h3>Contact</h3>
+
+          <div class="contact-profile">
+            <img class="contact-avatar" src="../assets/images/Image_06.png" alt="Divine Emmanuel portrait" loading="lazy" decoding="async" />
+            <div class="contact-person">
+              <div class="contact-name">Divine Emmanuel</div>
+              <div class="contact-role">AI-enabled Full‑Stack • DevSecOps • Cybersecurity</div>
+            </div>
+          </div>
+
+          <div class="social-icons" aria-label="Social links">
+            <a class="social-icon" href="mailto:Emmanuel@globalix-inc.com" aria-label="Gmail">
+              <svg viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v11A2.5 2.5 0 0 1 17.5 20h-11A2.5 2.5 0 0 1 4 17.5v-11Zm2.2.1 5.8 4.7 5.8-4.7H6.2Zm11.8 2.2-5.3 4.3a1.5 1.5 0 0 1-1.9 0L5.5 8.8V17.5c0 .6.4 1 1 1h11c.6 0 1-.4 1-1V8.8Z" fill="#d4af37"/></svg>
+            </a>
+            <a class="social-icon" href="https://www.youtube.com/" target="_blank" rel="noopener" aria-label="YouTube">
+              <svg viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M21.6 7.2a3 3 0 0 0-2.1-2.1C17.6 4.6 12 4.6 12 4.6s-5.6 0-7.5.5A3 3 0 0 0 2.4 7.2 31.8 31.8 0 0 0 2 12c0 1.6.1 3.2.4 4.8a3 3 0 0 0 2.1 2.1c1.9.5 7.5.5 7.5.5s5.6 0 7.5-.5a3 3 0 0 0 2.1-2.1c.3-1.6.4-3.2.4-4.8 0-1.6-.1-3.2-.4-4.8ZM10.3 15.3V8.7l5.7 3.3-5.7 3.3Z" fill="#d4af37"/></svg>
+            </a>
+            <a class="social-icon" href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9A5.5 5.5 0 0 1 16.5 22h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2Zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm6.2-2.2a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4Z" fill="#d4af37"/></svg>
+            </a>
+            <a class="social-icon" href="https://x.com/" target="_blank" rel="noopener" aria-label="Twitter">
+              <svg viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M18.9 2H22l-6.8 7.8L23 22h-6.8l-5.3-6.9L4.9 22H2l7.4-8.5L1 2h7l4.8 6.3L18.9 2Zm-1.2 18h1.9L6.2 3.9H4.2L17.7 20Z" fill="#d4af37"/></svg>
+            </a>
+            <a class="social-icon" href="https://www.facebook.com/" target="_blank" rel="noopener" aria-label="Facebook">
+              <svg viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M13.7 22v-8h2.7l.4-3h-3.1V9.1c0-.9.3-1.6 1.7-1.6h1.6V4.8c-.3 0-1.3-.1-2.5-.1-2.4 0-4.1 1.5-4.1 4.3V11H8v3h2.3v8h3.4Z" fill="#d4af37"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-dark">
+    <div class="container">
+      <div class="quote-box">
+        <p>
+          “Software engineering isn’t just writing code — it’s delivering secure, reliable systems through disciplined architecture,
+          automated DevSecOps, and thoughtful design.”
+        </p>
+        <span>Divine Emmanuel</span>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      © 2026 Divine Emmanuel. All rights reserved.
+    </div>
+  </footer>
+
+  <!-- Calendly (for instant time-slot booking + payment when enabled in Calendly) -->
+  <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript"></script>
+
+  <script>
+    const CONSULTATION_EMAIL = 'Emmanuel@globalix-inc.com';
+
+    const bookingForm = document.getElementById('bookingForm');
+    const totalCost = document.getElementById('totalCost');
+    const projectSizeInput = document.getElementById('projectSize');
+    const sessionTypeInput = document.getElementById('sessionType');
+    const instantBookingBtn = document.getElementById('instantBookingBtn');
+
+    const STRIPE_PAYMENT_LINKS = {
+      // Paste your Stripe Payment Links here (one-time payments)
+      // strategy30: 'https://buy.stripe.com/xxxx',
+      // deep60: 'https://buy.stripe.com/yyyy',
+    };
+
+    // Optional: if you prefer a single general booking page, paste your Calendly profile link here.
+    // Example: 'https://calendly.com/your-handle'
+    const CALENDLY_PROFILE_URL = '';
+
+    const CALENDLY_EVENT_URLS = {
+      // Paste your Calendly event links here (one per session).
+      // In Calendly, enable Stripe payments + Google Calendar integration for paid event types.
+      intro15: '',
+      strategy30: '',
+      deep60: '',
+    };
+
+    const SESSIONS = {
+      intro15: { key: 'intro15', productName: '15-Minute Intro Call', minutes: 15, priceCad: 0 },
+      strategy30: { key: 'strategy30', productName: '30-Minute Technical Strategy Session', minutes: 30, priceCad: 49.99 },
+      deep60: { key: 'deep60', productName: '1-Hour Deep Technical Consultation', minutes: 60, priceCad: 100 },
+    };
+
+    // Allow preselect via URL: ?session=intro15|strategy30|deep60
+    try {
+      const key = new URLSearchParams(window.location.search).get('session');
+      if (key && SESSIONS[key]) sessionTypeInput.value = key;
+    } catch (e) {}
+
+    function getSelectedSession() {
+      const key = String(sessionTypeInput?.value || 'strategy30');
+      return SESSIONS[key] || SESSIONS.strategy30;
+    }
+
+    function updateTotal() {
+      const s = getSelectedSession();
+      totalCost.textContent = `Session Price: $${s.priceCad} CAD`;
+    }
+
+    function openCalendlyForSelectedSession() {
+      const session = getSelectedSession();
+      const url = String(CALENDLY_EVENT_URLS[session.key] || CALENDLY_PROFILE_URL || '').trim();
+      if (!url) return false;
+      if (!window.Calendly || typeof window.Calendly.initPopupWidget !== 'function') return false;
+      window.Calendly.initPopupWidget({ url });
+      return true;
+    }
+
+    function fallbackToEmailRequest(sessionKey) {
+      try {
+        bookingForm?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } catch (e) {}
+
+      const msg = document.getElementById('message');
+      if (msg && typeof msg.focus === 'function') {
+        msg.focus({ preventScroll: true });
+        return;
+      }
+
+      const submitBtn = bookingForm?.querySelector('button[type="submit"]');
+      if (submitBtn && typeof submitBtn.focus === 'function') {
+        submitBtn.focus({ preventScroll: true });
+      }
+    }
+
+    function gatherBookingData() {
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const organization = document.getElementById('organization').value.trim();
+      const date = document.getElementById('date').value;
+      const serviceType = document.getElementById('serviceType').value;
+      const projectSize = document.getElementById('projectSize').value;
+      const session = getSelectedSession();
+      const message = document.getElementById('message').value.trim();
+      const total = session.priceCad;
+
+      return {
+        name,
+        email,
+        organization,
+        date,
+        serviceType,
+        projectSize,
+        sessionKey: session.key,
+        sessionType: session.productName,
+        minutes: session.minutes,
+        total,
+        currency: 'CAD',
+        message,
+      };
+    }
+
+    projectSizeInput?.addEventListener('change', updateTotal);
+    sessionTypeInput?.addEventListener('change', updateTotal);
+
+    bookingForm?.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const data = gatherBookingData();
+
+      try {
+        localStorage.setItem('pendingBooking', JSON.stringify(data));
+      } catch (_) {}
+
+      const subject = `Session Booking Request — ${data.sessionType}`;
+      const bodyLines = [
+        `Name: ${data.name}`,
+        `Email: ${data.email}`,
+        `Organization/Project: ${data.organization || '-'}`,
+        `Preferred consultation date: ${data.date}`,
+        `Service type: ${data.serviceType}`,
+        `Project size: ${data.projectSize}`,
+        `Session type: ${data.sessionType}`,
+        `Duration: ${data.minutes} minute(s)`,
+        `Session price: $${data.total} ${data.currency}`,
+        '',
+        'Notes / requirements:',
+        data.message || '-'
+      ];
+
+      const paymentLink = STRIPE_PAYMENT_LINKS[data.sessionKey];
+      if (paymentLink && data.total > 0) {
+        window.location.href = paymentLink;
+        return;
+      }
+
+      const mailtoUrl = `mailto:${CONSULTATION_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyLines.join('\n'))}`;
+      window.location.href = mailtoUrl;
+    });
+
+    if (instantBookingBtn) {
+      instantBookingBtn.addEventListener('click', () => {
+        const key = getSelectedSession().key;
+        window.location.href = `calendar.html?session=${encodeURIComponent(key)}`;
+      });
+    }
+
+    updateTotal();
+  </script>
+  <script>
+    // PWA: register service worker for install/offline support
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('../sw.js').catch(() => {});
+      });
+    }
+  </script>
+  <script>
+    // Hero carousel + gallery fade-in for smoother mobile experience
+    (function() {
+      const heroImg = document.querySelector('.hero-card img');
+      const heroImages = ['../assets/images/image1.jpeg','../assets/images/image2.jpeg','../assets/images/image_04.png','../assets/images/services-main.png'];
+      let hi = 0;
+      if (heroImg) {
+        heroImg.classList.add('fade-img');
+      }
+
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.2 });
+
+      document.querySelectorAll('.gallery-grid img').forEach(img => {
+        img.classList.add('fade-img');
+        io.observe(img);
+      });
+    })();
+  </script>
+  
+  <script>
+    (function() {
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const mobileMq = window.matchMedia('(max-width: 900px)');
+
+      const chatBody = document.getElementById('ddChatBody');
+      const typing = document.getElementById('ddTyping');
+      const stepPill = document.getElementById('ddChatStep');
+      const stepEls = Array.from(document.querySelectorAll('.dd-step'));
+
+      if (!chatBody || !typing || !stepPill || !stepEls.length) return;
+
+      const steps = ['Planning', 'Build', 'Test', 'Secure', 'Deploy'];
+      const script = [
+        { step: 'Planning', from: 'system', text: 'Collecting requirements + mapping user flows…' },
+        { step: 'Planning', from: 'divine', text: 'I’ve identified the critical path and data boundaries. Next: build plan.' },
+        { step: 'Build', from: 'system', text: 'Implementing API contracts + UI states…' },
+        { step: 'Build', from: 'divine', text: 'Shipping core endpoints, validation, and clean interfaces for maintainability.' },
+        { step: 'Test', from: 'system', text: 'Running test suite + smoke checks…' },
+        { step: 'Test', from: 'divine', text: 'Adding edge-case tests and tightening error handling to keep failures predictable.' },
+        { step: 'Secure', from: 'system', text: 'Executing security review: auth, input validation, and dependency risk…' },
+        { step: 'Secure', from: 'divine', text: 'Hardening completed — documenting fixes and recommended controls.' },
+        { step: 'Deploy', from: 'system', text: 'Deploying to staging with CI/CD checks…' },
+        { step: 'Deploy', from: 'divine', text: 'Deployment verified. Monitoring hooks added; ready for production approval.' }
+      ];
+
+      function setStep(step) {
+        const s = steps.includes(step) ? step : 'Planning';
+        stepPill.textContent = s;
+        stepEls.forEach((el) => {
+          const isActive = (el.getAttribute('data-step') || '') === s;
+          el.classList.toggle('is-active', isActive);
+        });
+      }
+
+      function addBubble(from, text) {
+        const bubble = document.createElement('div');
+        bubble.className = `dd-bubble ${from}`;
+        bubble.textContent = text;
+        chatBody.appendChild(bubble);
+
+        // keep it concise
+        const bubbles = chatBody.querySelectorAll('.dd-bubble');
+        if (bubbles.length > 10) {
+          for (let i = 0; i < bubbles.length - 10; i += 1) {
+            bubbles[i].remove();
+          }
+        }
+
+        chatBody.scrollTop = chatBody.scrollHeight;
+      }
+
+      let index = 0;
+      let intervalId = null;
+      let typingTimer = null;
+      let observer = null;
+      let running = false;
+
+      function stop() {
+        running = false;
+        if (intervalId) window.clearInterval(intervalId);
+        if (typingTimer) window.clearTimeout(typingTimer);
+        intervalId = null;
+        typingTimer = null;
+        typing.hidden = true;
+      }
+
+      function tick() {
+        if (document.visibilityState === 'hidden') return;
+        const item = script[index % script.length];
+        index += 1;
+
+        setStep(item.step);
+
+        if (prefersReducedMotion) {
+          addBubble(item.from, item.text);
+          return;
+        }
+
+        typing.hidden = false;
+        typingTimer = window.setTimeout(() => {
+          typing.hidden = true;
+          addBubble(item.from, item.text);
+        }, 650);
+      }
+
+      function start() {
+        if (running) return;
+        if (!mobileMq.matches) return;
+        running = true;
+        tick();
+        intervalId = window.setInterval(tick, 2400);
+      }
+
+      function initVisibilityControl() {
+        if (!('IntersectionObserver' in window)) {
+          start();
+          return;
+        }
+
+        observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) start();
+            else stop();
+          });
+        }, { threshold: 0.25 });
+
+        observer.observe(chatBody);
+      }
+
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'hidden') stop();
+        else start();
+      });
+
+      mobileMq.addEventListener?.('change', () => {
+        if (!mobileMq.matches) stop();
+        else start();
+      });
+
+      initVisibilityControl();
+    })();
+  </script>
+  <!-- Video modal -->
+  <div id="videoModal" class="video-modal" aria-hidden="true">
+    <div class="video-modal-backdrop" data-action="close"></div>
+    <div class="video-modal-content" role="dialog" aria-modal="true" tabindex="-1">
+      <button class="video-modal-close" aria-label="Close video">✕</button>
+      <div id="videoModalPlayer" class="video-modal-player"></div>
+    </div>
+  </div>
+  <style>
+    .video-modal { position:fixed; inset:0; display:none; align-items:center; justify-content:center; z-index:2000; }
+    .video-modal.show { display:flex; }
+    .video-modal-backdrop { position:absolute; inset:0; background:rgba(0,0,0,0.75); }
+    .video-modal-content { position:relative; width:92%; max-width:980px; background:transparent; border-radius:8px; z-index:2; }
+    .video-modal-player iframe, .video-modal-player video { width:100%; height:60vh; border-radius:6px; }
+    .video-modal-close { position:absolute; right:-6px; top:-28px; background:#111; color:#fff; border:0; padding:8px 10px; border-radius:20px; cursor:pointer; font-size:14px; z-index:3; }
+    @media (max-width:600px){ .video-modal-player iframe, .video-modal-player video { height:52vh; } }
+      header { animation: slideDown 0.8s ease forwards; } @keyframes slideDown { from { transform: translateY(-100%); } to { transform: translateY(0); } } .hero-text { animation: fadeInRight 1s ease 0.2s both; } .hero-card { animation: fadeInLeft 1s ease 0.4s both; } @keyframes fadeInRight { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } } @keyframes fadeInLeft { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }</style>
+
+  <script>
+    (function(){
+      const videoMap = {
+        video1: 'https://www.youtube.com/embed/VIDEO_ID_1',
+        video2: 'https://www.youtube.com/embed/VIDEO_ID_2',
+        video3: 'https://www.youtube.com/embed/VIDEO_ID_3',
+        video4: 'https://www.youtube.com/embed/VIDEO_ID_4',
+        video5: 'https://www.youtube.com/embed/VIDEO_ID_5',
+        video6: 'https://www.youtube.com/embed/VIDEO_ID_6'
+      };
+
+      const modal = document.getElementById('videoModal');
+      const player = document.getElementById('videoModalPlayer');
+      const closeBtn = modal.querySelector('.video-modal-close');
+
+      let _lastFocus = null;
+      function openModal(key) {
+        const src = videoMap[key];
+        if (!src) return;
+        _lastFocus = document.activeElement;
+        player.innerHTML = '';
+        const iframe = document.createElement('iframe');
+        iframe.src = src + '?rel=0&autoplay=1';
+        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+        iframe.allowFullscreen = true;
+        player.appendChild(iframe);
+        modal.classList.add('show');
+        modal.setAttribute('aria-hidden','false');
+        document.body.style.overflow = 'hidden';
+        const closeBtn = modal.querySelector('.video-modal-close');
+        if (closeBtn) closeBtn.focus();
+      }
+
+      function closeModal(){
+        modal.classList.remove('show');
+        modal.setAttribute('aria-hidden','true');
+        player.innerHTML = '';
+        document.body.style.overflow = '';
+        if (_lastFocus && typeof _lastFocus.focus === 'function') _lastFocus.focus();
+        _lastFocus = null;
+      }
+
+      document.addEventListener('click', function(e){
+        const a = e.target.closest('.gallery-link');
+        if (!a) return;
+        e.preventDefault();
+        const href = a.getAttribute('href') || '';
+        const hash = href.includes('#') ? href.split('#')[1] : a.dataset.video;
+        if (hash) openModal(hash);
+      });
+
+      modal.addEventListener('click', function(e){
+        if (e.target.dataset.action === 'close' || e.target === closeBtn) closeModal();
+      });
+
+      closeBtn.addEventListener('click', closeModal);
+      document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeModal(); });
+    })();
+  </script>
+  <!-- Chat Launcher: WhatsApp -->
+  <div class="chat-launcher-wrap" aria-label="WhatsApp chat">
+    <button id="chatLauncher" class="chat-launcher" aria-haspopup="dialog" aria-controls="chatOverlay" aria-label="Open WhatsApp chat">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M4 5.5C4 4.12 5.12 3 6.5 3H17.5C18.88 3 20 4.12 20 5.5V14.5C20 15.88 18.88 17 17.5 17H10.2L6 20.4V17H6.5C5.12 17 4 15.88 4 14.5V5.5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M7.5 7.8H16.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M7.5 11.2H14.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
+
+    <div id="chatOverlay" class="chat-overlay" role="dialog" aria-modal="true" aria-hidden="true">
+      <div class="chat-sheet" id="chatSheet" tabindex="-1" aria-label="WhatsApp chat">
+        <div class="chat-sheet-header">
+          <div class="chat-sheet-title">Chat</div>
+          <button type="button" class="chat-close" id="chatClose" aria-label="Close chat">&times;</button>
+        </div>
+
+        <div id="waPanel" class="wa-panel" aria-label="WhatsApp message" hidden>
+          <div class="wa-header">
+            <button type="button" class="wa-back" id="waBack" aria-label="Close chat">←</button>
+            <div class="wa-title">WhatsApp</div>
+          </div>
+
+          <div class="wa-body">
+            <div class="wa-note">Type a message here. When you press Send, WhatsApp opens in a new tab.</div>
+
+            <form class="wa-form" id="waForm" autocomplete="off">
+              <textarea id="waInput" class="wa-textarea" placeholder="Write your message…" aria-label="WhatsApp message"></textarea>
+              <button type="submit" class="wa-send" aria-label="Send on WhatsApp">Send</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .chat-launcher-wrap { position: fixed; right: 16px; bottom: 16px; z-index: 5000; }
+
+    .chat-launcher {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: 4px solid rgba(255,255,255,0.10);
+      background: rgba(212,175,55,0.16);
+      color: #d4af37;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.40);
+      transition: 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .chat-launcher::before {
+      content: '';
+      position: absolute;
+      inset: -10px;
+      border-radius: 999px;
+      border: 1px solid rgba(212,175,55,0.35);
+      opacity: 0.0;
+      transform: scale(0.92);
+      animation: chatPulse 1800ms ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes chatPulse {
+      0% { opacity: 0.0; transform: scale(0.92); }
+      35% { opacity: 0.55; transform: scale(1.02); }
+      70% { opacity: 0.10; transform: scale(1.10); }
+      100% { opacity: 0.0; transform: scale(0.92); }
+    }
+
+    .chat-launcher:hover { transform: scale(1.06) rotate(3deg); background: rgba(212,175,55,0.22); }
+
+    .chat-overlay {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: flex-end;
+      justify-content: flex-end;
+      padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+      background: rgba(0,0,0,0.55);
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+    }
+
+    body.chat-open { overflow: hidden; }
+
+    .chat-sheet [hidden] { display: none !important; }
+
+    .chat-sheet {
+      width: min(460px, 94vw);
+      height: min(720px, calc(100dvh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom)));
+      max-height: calc(100dvh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+      overflow: hidden;
+      position: relative;
+      isolation: isolate;
+      border-radius: 14px;
+      border: 1px solid rgba(212, 175, 55, 0.20);
+      background: rgba(0,0,0,0.55);
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.55);
+      transform: translateY(16px) scale(0.98);
+      opacity: 0;
+      transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1), opacity 220ms ease;
+      will-change: transform, opacity;
+      display: grid;
+      grid-template-rows: auto 1fr;
+    }
+
+    .chat-sheet::after {
+      content: '';
+      position: absolute;
+      inset: -46px;
+      background:
+        radial-gradient(420px 240px at 20% 15%, rgba(212,175,55,0.40), transparent 60%),
+        radial-gradient(360px 220px at 85% 20%, rgba(37,211,102,0.22), transparent 62%),
+        radial-gradient(520px 360px at 55% 85%, rgba(212,175,55,0.18), transparent 60%);
+      filter: blur(26px);
+      opacity: 0.70;
+      transform: translate3d(0,0,0);
+      animation: chatAurora 6.2s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .chat-sheet > * { position: relative; z-index: 1; }
+
+    @keyframes chatAurora {
+      0% { transform: translate3d(-10px, 8px, 0) scale(1.02); opacity: 0.55; }
+      45% { transform: translate3d(12px, -10px, 0) scale(1.06); opacity: 0.85; }
+      100% { transform: translate3d(-10px, 8px, 0) scale(1.02); opacity: 0.55; }
+    }
+
+    .chat-overlay.is-open .chat-sheet { transform: translateY(0) scale(1); opacity: 1; }
+
+    .chat-sheet-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 14px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .chat-sheet-title {
+      color: rgba(255,255,255,0.92);
+      font-weight: 900;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+    }
+
+    .chat-close {
+      background: transparent;
+      border: 0;
+      color: rgba(255,255,255,0.92);
+      font-size: 1.6rem;
+      line-height: 1;
+      cursor: pointer;
+      padding: 0 4px;
+    }
+
+    .wa-panel {
+      height: 100%;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      padding: 0;
+      min-height: 0;
+    }
+
+    .wa-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .wa-back {
+      border: 1px solid rgba(212,175,55,0.18);
+      background: rgba(212,175,55,0.10);
+      color: #d4af37;
+      border-radius: 999px;
+      padding: 6px 10px;
+      cursor: pointer;
+      font-weight: 900;
+    }
+
+    .wa-title { color: rgba(255,255,255,0.92); font-weight: 900; }
+
+    .wa-body {
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+      min-height: 0;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+    }
+
+    .wa-note {
+      color: rgba(255,255,255,0.72);
+      font-size: 0.92rem;
+      line-height: 1.4;
+    }
+
+    .wa-form {
+      display: grid;
+      grid-template-rows: 1fr auto;
+      gap: 10px;
+      min-height: 0;
+    }
+
+    .wa-textarea {
+      width: 100%;
+      min-height: 140px;
+      max-height: 40vh;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+      color: rgba(255,255,255,0.92);
+      outline: none;
+      resize: none;
+      overflow: auto;
+      font-family: inherit;
+    }
+
+    .wa-textarea:focus {
+      border-color: rgba(212,175,55,0.55);
+      box-shadow: 0 0 0 3px rgba(212,175,55,0.10);
+    }
+
+    .wa-send {
+      border-radius: 999px;
+      padding: 12px 14px;
+      border: 1px solid rgba(212,175,55,0.55);
+      background: rgba(212,175,55,0.14);
+      color: #d4af37;
+      font-weight: 900;
+      cursor: pointer;
+      min-width: 78px;
+    }
+
+    @media (max-width: 480px) {
+      .chat-overlay { justify-content: center; }
+      .chat-sheet { width: min(520px, 96vw); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .chat-launcher, .chat-sheet { transition: none; }
+      .chat-launcher::before { animation: none; }
+      .chat-sheet::after { animation: none; }
+      .chat-overlay { -webkit-backdrop-filter: none; backdrop-filter: none; }
+    }
+
+    header { animation: slideDown 0.8s ease forwards; } @keyframes slideDown { from { transform: translateY(-100%); } to { transform: translateY(0); } } .hero-text { animation: fadeInRight 1s ease 0.2s both; } .hero-card { animation: fadeInLeft 1s ease 0.4s both; } @keyframes fadeInRight { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } } @keyframes fadeInLeft { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
+  </style>
+
+  <script>
+    (function() {
+      const launcher = document.getElementById('chatLauncher');
+      const overlay = document.getElementById('chatOverlay');
+      const closeBtn = document.getElementById('chatClose');
+
+      const waPanel = document.getElementById('waPanel');
+      const waBack = document.getElementById('waBack');
+      const waForm = document.getElementById('waForm');
+      const waInput = document.getElementById('waInput');
+
+      const WA_NUMBER = '13653845983';
+
+      let lastActiveEl = null;
+
+      function openWhatsApp(prefill) {
+        const defaultMsg = "Hi Divine, I visited your website and would like to discuss software, cybersecurity, and/or DevSecOps services. Could we schedule a consultation?";
+        const msg = (prefill || '').trim() || defaultMsg;
+        const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
+        window.open(url, '_blank', 'noopener');
+      }
+
+      function showWhatsApp(prefill) {
+        if (waPanel) waPanel.hidden = false;
+        if (waInput && !String(waInput.value || '').trim()) {
+          const defaultMsg = "Hi Divine, I visited your website and would like to discuss software, cybersecurity, and/or DevSecOps services. Could we schedule a consultation?";
+          waInput.value = (prefill || '').trim() || defaultMsg;
+        }
+        setTimeout(() => {
+          try { waInput && waInput.focus({ preventScroll: true }); } catch (e) {}
+        }, 0);
+      }
+
+      function openOverlay() {
+        if (!overlay) return;
+        lastActiveEl = document.activeElement;
+        overlay.style.display = 'flex';
+        overlay.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('chat-open');
+        requestAnimationFrame(() => overlay.classList.add('is-open'));
+        showWhatsApp();
+      }
+
+      function closeOverlay() {
+        if (!overlay) return;
+        overlay.classList.remove('is-open');
+        overlay.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('chat-open');
+        setTimeout(() => {
+          overlay.style.display = 'none';
+          if (waPanel) waPanel.hidden = true;
+          try { lastActiveEl && lastActiveEl.focus && lastActiveEl.focus(); } catch (e) {}
+        }, 180);
+      }
+
+      launcher && launcher.addEventListener('click', openOverlay);
+      closeBtn && closeBtn.addEventListener('click', closeOverlay);
+      waBack && waBack.addEventListener('click', closeOverlay);
+
+      overlay && overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) closeOverlay();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (!overlay) return;
+        if (overlay.getAttribute('aria-hidden') === 'true') return;
+        if (e.key === 'Escape') closeOverlay();
+      });
+
+      waForm && waForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        openWhatsApp(waInput ? waInput.value : '');
+        closeOverlay();
+      });
+    })();
+  </script>
+
+  <script>
+    (function() {
+      const originalTitle = document.title;
+      const techMessages = [
+        "Request a Consultation",
+        "Inside Services",
+        "AI-Enabled DevSecOps",
+        "Secure Delivery, Reliable Ops"
+      ];
+      let techIndex = 0;
+
+      window.addEventListener('blur', () => {
+        document.title = techMessages[techIndex];
+        techIndex = (techIndex + 1) % techMessages.length;
+      });
+
+      window.addEventListener('focus', () => {
+        document.title = originalTitle;
+      });
+    })();
+  </script>
+
+  <script>
+    (function(){
+      const root = document.getElementById('expertiseAccordion');
+      if (!root) return;
+
+      const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      function setPanelHeight(panel, heightPx){
+        panel.style.height = heightPx;
+      }
+
+      function openItem(item){
+        const trigger = item.querySelector('.acc-trigger');
+        const panel = item.querySelector('.acc-panel');
+        if (!trigger || !panel) return;
+
+        item.classList.add('is-open');
+        trigger.setAttribute('aria-expanded','true');
+        panel.hidden = false;
+
+        if (prefersReduced) {
+          setPanelHeight(panel, 'auto');
+          return;
+        }
+
+        setPanelHeight(panel, '0px');
+        const target = panel.scrollHeight;
+        requestAnimationFrame(() => {
+          setPanelHeight(panel, target + 'px');
+        });
+
+        const onEnd = (e) => {
+          if (e.propertyName !== 'height') return;
+          panel.removeEventListener('transitionend', onEnd);
+          if (item.classList.contains('is-open')) setPanelHeight(panel, 'auto');
+        };
+        panel.addEventListener('transitionend', onEnd);
+      }
+
+      function closeItem(item){
+        const trigger = item.querySelector('.acc-trigger');
+        const panel = item.querySelector('.acc-panel');
+        if (!trigger || !panel) return;
+
+        item.classList.remove('is-open');
+        trigger.setAttribute('aria-expanded','false');
+
+        if (prefersReduced) {
+          setPanelHeight(panel, '0px');
+          panel.hidden = true;
+          return;
+        }
+
+        const current = panel.scrollHeight;
+        setPanelHeight(panel, current + 'px');
+        requestAnimationFrame(() => {
+          setPanelHeight(panel, '0px');
+        });
+
+        const onEnd = (e) => {
+          if (e.propertyName !== 'height') return;
+          panel.removeEventListener('transitionend', onEnd);
+          if (!item.classList.contains('is-open')) panel.hidden = true;
+        };
+        panel.addEventListener('transitionend', onEnd);
+      }
+
+      const items = Array.from(root.querySelectorAll('.acc-item'));
+
+      root.addEventListener('click', (e) => {
+        const btn = e.target.closest('.acc-trigger');
+        if (!btn) return;
+        const item = btn.closest('.acc-item');
+        if (!item) return;
+
+        const isOpen = item.classList.contains('is-open');
+        items.forEach(other => {
+          if (other !== item) closeItem(other);
+        });
+
+        if (isOpen) closeItem(item);
+        else openItem(item);
+      });
+    })();
+  </script>
+</body>
+</html>
