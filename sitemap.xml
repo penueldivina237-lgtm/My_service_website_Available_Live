@@ -6,57 +6,56 @@
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
-
   <url>
-    <loc>https://penueldivina237-lgtm.github.io/my_service/public/calendar.html</loc>
+    <loc>https://penueldivina237-lgtm.github.io/my_service/calendar.html</loc>
     <lastmod>2026-04-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://penueldivina237-lgtm.github.io/my_service/public/request-consultation.html</loc>
+    <loc>https://penueldivina237-lgtm.github.io/my_service/request-consultation.html</loc>
     <lastmod>2026-04-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://penueldivina237-lgtm.github.io/my_service/public/service-summary.html</loc>
+    <loc>https://penueldivina237-lgtm.github.io/my_service/service-summary.html</loc>
     <lastmod>2026-04-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://penueldivina237-lgtm.github.io/my_service/public/core-expertise.html</loc>
+    <loc>https://penueldivina237-lgtm.github.io/my_service/core-expertise.html</loc>
     <lastmod>2026-04-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://penueldivina237-lgtm.github.io/my_service/public/faq.html</loc>
+    <loc>https://penueldivina237-lgtm.github.io/my_service/faq.html</loc>
     <lastmod>2026-04-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://penueldivina237-lgtm.github.io/my_service/public/estimator.html</loc>
+    <loc>https://penueldivina237-lgtm.github.io/my_service/estimator.html</loc>
     <lastmod>2026-04-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://penueldivina237-lgtm.github.io/my_service/public/video.html</loc>
+    <loc>https://penueldivina237-lgtm.github.io/my_service/video.html</loc>
     <lastmod>2026-04-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://penueldivina237-lgtm.github.io/my_service/public/inside.html</loc>
+    <loc>https://penueldivina237-lgtm.github.io/my_service/inside.html</loc>
     <lastmod>2026-04-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://penueldivina237-lgtm.github.io/my_service/public/booking-success.html</loc>
+    <loc>https://penueldivina237-lgtm.github.io/my_service/booking-success.html</loc>
     <lastmod>2026-04-12</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
